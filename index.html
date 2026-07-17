@@ -3,71 +3,133 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Comp in a Box — Run a competition your members brag about</title>
-<meta name="description" content="The complete done-for-you system for running your box's next in-house CrossFit competition: heats, scoring, workouts, and the event-day playbook.">
+<title>Comp in a Box — the competition operating system for CrossFit boxes</title>
+<meta name="description" content="The done-for-you system for running your box's in-house competition: heats, live scoring, judge rotation, workouts, and the event-day playbook. Run the day, not the spreadsheet.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect x='8' y='8' width='104' height='104' rx='26' fill='%2310243A'/%3E%3Ccircle cx='36' cy='40' r='4.5' fill='%2314B88A'/%3E%3Crect x='47' y='35.5' width='45' height='9' rx='4.5' fill='%2314B88A'/%3E%3Ccircle cx='36' cy='60' r='4.5' fill='%237C90A3'/%3E%3Crect x='47' y='55.5' width='35' height='9' rx='4.5' fill='%237C90A3'/%3E%3Ccircle cx='36' cy='80' r='4.5' fill='%237C90A3'/%3E%3Crect x='47' y='75.5' width='27' height='9' rx='4.5' fill='%237C90A3'/%3E%3C/svg%3E">
 <style>
   :root{
-    --accent:#D7263D;
-    --ink:#141414;
-    --muted:#5b5b5b;
-    --line:#e7e7e7;
-    --bg:#ffffff;
-    --soft:#faf7f7;
+    --ink:#10243A;
+    --ink-panel:#17324F;
+    --slate:#4A5A6A;
+    --slate-mute:#7C90A3;
+    --chalk:#F7F5F1;
+    --paper:#FFFFFF;
+    --signal:#14B88A;
+    --signal-deep:#0C7A5B;
+    --amber:#F2A93B;
+    --line:#E3DED5;
+    --line-dark:rgba(255,255,255,.10);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
   body{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    color:var(--ink);background:var(--bg);line-height:1.6;
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    color:var(--ink);background:var(--chalk);line-height:1.6;font-size:16px;
     -webkit-font-smoothing:antialiased;
   }
-  .wrap{max-width:820px;margin:0 auto;padding:0 24px}
+  h1,h2,h3,.display{font-family:'Space Grotesk',sans-serif;letter-spacing:-.02em;line-height:1.1}
+  .mono{font-family:'IBM Plex Mono',monospace}
+  .wrap{max-width:860px;margin:0 auto;padding:0 28px}
+
+  /* Buttons */
   .btn{
-    display:inline-block;background:var(--accent);color:#fff;text-decoration:none;
-    font-weight:700;padding:16px 34px;border-radius:10px;font-size:1.05rem;
-    transition:transform .12s ease, box-shadow .12s ease;
-    box-shadow:0 6px 18px rgba(215,38,61,.28);
+    display:inline-block;background:var(--signal);color:var(--ink);text-decoration:none;
+    font-family:'Space Grotesk',sans-serif;font-weight:600;padding:16px 34px;border-radius:12px;
+    font-size:1.05rem;transition:transform .12s ease, box-shadow .12s ease;
+    box-shadow:0 6px 20px rgba(20,184,138,.30);
   }
-  .btn:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(215,38,61,.36)}
-  .btn.ghost{background:transparent;color:var(--accent);box-shadow:none;border:2px solid var(--accent);padding:14px 32px}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(20,184,138,.40)}
+  .btn.ghost{
+    background:transparent;color:var(--chalk);box-shadow:none;
+    border:1.5px solid rgba(247,245,241,.35);font-weight:500;
+  }
+  .btn.ghost:hover{border-color:var(--signal);color:var(--signal);transform:translateY(-2px)}
+  .btn-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;align-items:center}
 
   /* Hero */
-  header{background:var(--ink);color:#fff;padding:96px 0 88px;text-align:center}
-  header .kicker{color:var(--accent);font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:.8rem;margin-bottom:22px}
-  header h1{font-size:2.8rem;line-height:1.12;letter-spacing:-.02em;margin-bottom:22px}
-  header .sub{font-size:1.22rem;color:#d9d9d9;max-width:640px;margin:0 auto 38px}
-  header .sub strong{color:#fff}
+  header{background:var(--ink);color:var(--chalk);padding:64px 0 84px;text-align:center}
+  .hero-logo{width:300px;max-width:78%;height:auto;margin:0 auto 40px;display:block}
+  .kicker{font-family:'IBM Plex Mono',monospace;color:var(--signal);font-weight:600;
+    letter-spacing:.16em;text-transform:uppercase;font-size:.74rem;margin-bottom:20px}
+  header h1{font-size:3.1rem;margin-bottom:22px;color:var(--chalk)}
+  header .sub{font-size:1.2rem;color:var(--slate-mute);max-width:600px;margin:0 auto 20px}
+  header .sub strong{color:var(--chalk);font-weight:500}
+  .handled{color:var(--signal);font-weight:600}
 
-  section{padding:72px 0}
-  .soft{background:var(--soft)}
-  h2{font-size:1.9rem;letter-spacing:-.02em;margin-bottom:22px}
-  p.lead{font-size:1.12rem;color:var(--muted);margin-bottom:18px}
+  /* Mono leaderboard tease */
+  .board{background:var(--ink-panel);border:1px solid var(--line-dark);border-radius:14px;
+    padding:16px 22px;max-width:420px;margin:32px auto 40px;font-family:'IBM Plex Mono',monospace;
+    font-size:.92rem;text-align:left}
+  .board .brow{display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid var(--line-dark);color:var(--chalk)}
+  .board .brow:first-child{border-top:none}
+  .board .rank{color:var(--signal)}
+  .board .rank.mut{color:var(--slate-mute)}
+  .board .cap{color:var(--slate-mute);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+    padding-bottom:6px;display:block}
+
+  /* Sections */
+  section{padding:76px 0}
+  h2{font-size:2rem;margin-bottom:18px}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--signal-deep);font-weight:600;margin-bottom:14px}
+  p.lead{font-size:1.12rem;color:var(--slate);margin-bottom:18px;max-width:64ch}
+  p.lead strong{color:var(--ink)}
+  .trust-note{color:var(--slate-mute);font-size:.98rem;margin-top:6px}
 
   /* Included list */
-  .items{list-style:none;margin-top:34px;display:grid;gap:18px}
-  .items li{background:#fff;border:1px solid var(--line);border-radius:12px;padding:22px 24px}
-  .items li b{display:block;font-size:1.08rem;margin-bottom:4px}
-  .items li span{color:var(--muted)}
-  .items li::before{content:"";display:inline-block}
+  .items{list-style:none;margin-top:30px;display:grid;gap:14px}
+  .items li{background:var(--paper);border:1px solid var(--line);border-radius:14px;
+    padding:20px 22px 20px 54px;position:relative}
+  .items li::before{content:"";position:absolute;left:20px;top:23px;width:20px;height:20px;
+    border-radius:6px;background:var(--signal);
+    -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E") center/16px no-repeat;
+    mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E") center/16px no-repeat}
+  .items li b{display:block;font-family:'Space Grotesk',sans-serif;font-size:1.06rem;margin-bottom:3px}
+  .items li span{color:var(--slate)}
+  .keepnote{margin-top:22px;color:var(--slate-mute);font-size:.95rem;font-style:italic}
 
   /* Offer */
-  .offer{background:var(--ink);color:#fff;text-align:center}
-  .offer .price{font-size:3.4rem;font-weight:800;letter-spacing:-.02em;margin:8px 0 2px}
-  .offer .price small{font-size:1.1rem;color:#bdbdbd;font-weight:500;text-decoration:line-through;margin-left:12px}
-  .offer p.lead{color:#d0d0d0;max-width:620px;margin:0 auto 34px}
-  .offer .tag{color:var(--accent);font-weight:800;text-transform:uppercase;letter-spacing:.12em;font-size:.82rem}
+  .offer{background:var(--ink);color:var(--chalk);text-align:center}
+  .offer .tag{display:inline-block;background:var(--amber);color:var(--ink);
+    font-family:'IBM Plex Mono',monospace;font-weight:600;text-transform:uppercase;
+    letter-spacing:.1em;font-size:.72rem;padding:6px 14px;border-radius:999px;margin-bottom:22px}
+  .offer .price{font-family:'IBM Plex Mono',monospace;font-size:3.6rem;font-weight:600;
+    color:var(--chalk);margin:6px 0 4px;letter-spacing:-.01em}
+  .offer .price small{font-size:1.15rem;color:var(--slate-mute);font-weight:400;
+    text-decoration:line-through;margin-left:14px}
+  .offer p.lead{color:var(--slate-mute);max-width:600px;margin:0 auto 30px}
+  .offer p.lead strong{color:var(--chalk)}
+  .offer .micro{color:var(--slate-mute);font-size:.9rem;margin-top:18px}
 
-  .trust{text-align:center;font-style:italic;color:var(--muted);max-width:640px;margin:0 auto;font-size:1.08rem}
+  /* FAQ */
+  .faq{max-width:760px;margin:26px auto 0}
+  details{background:var(--paper);border:1px solid var(--line);border-radius:12px;
+    padding:0 22px;margin-bottom:12px}
+  summary{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:1.05rem;
+    padding:18px 0;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";color:var(--signal-deep);font-size:1.4rem;font-weight:400;margin-left:16px}
+  details[open] summary::after{content:"–"}
+  details p{color:var(--slate);padding:0 0 20px;max-width:62ch}
 
-  footer{padding:44px 0;text-align:center;color:#9a9a9a;font-size:.9rem;border-top:1px solid var(--line)}
+  /* Closing */
+  .closing{text-align:center;background:var(--chalk)}
+  .closing h2{margin-bottom:10px}
+  .closing p{color:var(--slate);font-size:1.12rem;margin-bottom:26px}
+
+  footer{background:var(--ink);color:var(--slate-mute);padding:38px 0;text-align:center;
+    font-size:.88rem;font-family:'IBM Plex Mono',monospace}
 
   @media(max-width:600px){
-    header{padding:72px 0 64px}
-    header h1{font-size:2.05rem}
-    header .sub{font-size:1.08rem}
+    header{padding:52px 0 64px}
+    header h1{font-size:2.15rem}
+    header .sub{font-size:1.06rem}
     section{padding:56px 0}
-    h2{font-size:1.55rem}
-    .offer .price{font-size:2.6rem}
+    h2{font-size:1.6rem}
+    .offer .price{font-size:2.8rem}
   }
 </style>
 </head>
@@ -75,31 +137,55 @@
 
 <header>
   <div class="wrap">
-    <div class="kicker">Comp in a Box</div>
-    <h1>Run a competition your members<br>brag about.</h1>
-    <p class="sub">Without the week of chaos it usually costs you. The complete system for running your box's next in-house competition — <strong>heats, scoring, workouts, and the event-day playbook, done for you.</strong></p>
-    <a class="btn" href="#offer">Get Comp in a Box →</a>
+    <svg class="hero-logo" viewBox="0 0 470 120" xmlns="http://www.w3.org/2000/svg" aria-label="Comp in a Box">
+      <rect x="8" y="8" width="104" height="104" rx="26" fill="#F7F5F1"/>
+      <circle cx="36" cy="40" r="4.5" fill="#14B88A"/><rect x="47" y="35.5" width="45" height="9" rx="4.5" fill="#14B88A"/>
+      <circle cx="36" cy="60" r="4.5" fill="#10243A"/><rect x="47" y="55.5" width="35" height="9" rx="4.5" fill="#10243A"/>
+      <circle cx="36" cy="80" r="4.5" fill="#10243A"/><rect x="47" y="75.5" width="27" height="9" rx="4.5" fill="#10243A"/>
+      <text x="140" y="56" font-family="'Space Grotesk',sans-serif" font-size="34" font-weight="600" fill="#F7F5F1" letter-spacing="-0.6">Comp in a Box</text>
+      <text x="141" y="82" font-family="'Space Grotesk',sans-serif" font-size="12.5" font-weight="500" fill="#9FB0BF" letter-spacing="2.8">THE COMPETITION OPERATING SYSTEM</text>
+    </svg>
+    <div class="kicker">The competition operating system for CrossFit boxes</div>
+    <h1>Run the day,<br>not the spreadsheet.</h1>
+    <p class="sub">Everything you need to run your box's in-house competition — heats, live scoring, judge rotation, workouts, and the event-day playbook — <strong>built and ready.</strong> You bring the athletes. The logistics are <span class="handled">handled.</span></p>
+    <div class="board" aria-hidden="true">
+      <span class="cap">Live leaderboard · RX Men</span>
+      <div class="brow"><span><span class="rank">01</span>&nbsp;&nbsp;A. Rivera</span><span>247 pts</span></div>
+      <div class="brow"><span><span class="rank mut">02</span>&nbsp;&nbsp;J. Okafor</span><span>238 pts</span></div>
+      <div class="brow"><span><span class="rank mut">03</span>&nbsp;&nbsp;M. Devlin</span><span>229 pts</span></div>
+    </div>
+    <div class="btn-row">
+      <a class="btn" href="#offer">Get Comp in a Box →</a>
+      <a class="btn ghost" href="#inside">See what's inside</a>
+    </div>
   </div>
 </header>
 
 <section>
   <div class="wrap">
-    <h2>The weekend that packs your box — minus the stress</h2>
-    <p class="lead">Running your own competition is one of the best things you can do for your gym. It fills the room, builds community, and brings in real revenue. It's also one of the most stressful weekends of your year: building heats by hand, scrambling for fair workouts across divisions, and hoping nothing falls apart in front of a room full of members.</p>
-    <p class="lead">Comp in a Box hands you the whole operating system — built by someone who's spent a decade coaching and running events inside CrossFit boxes — so you can focus on the day, not the logistics.</p>
+    <p class="eyebrow">The problem</p>
+    <h2>The best weekend of your year shouldn't be the most stressful.</h2>
+    <p class="lead">An in-house comp fills the room, tightens your community, and brings in real revenue. It's also the weekend you spend rebuilding heats by hand at midnight, second-guessing whether the divisions are fair, and hoping the leaderboard holds up in front of a room full of members.</p>
+    <p class="lead">It doesn't have to run on nerves. Comp in a Box gives you the whole system a good event needs — <strong>already built, already tested</strong> — so on the day you're coaching the room, not babysitting a spreadsheet.</p>
+    <p class="trust-note">Built by an operator who's spent a decade inside CrossFit boxes running these events — for the coach who'd rather run the floor than the back office.</p>
   </div>
 </section>
 
-<section class="soft">
+<section id="inside">
   <div class="wrap">
-    <h2>Everything you need to run the day</h2>
+    <p class="eyebrow">What's inside</p>
+    <h2>One system. Everything the day needs.</h2>
     <ul class="items">
-      <li><b>Heat-scheduling &amp; live-scoring spreadsheet</b><span>Build heats across divisions and score the leaderboard live — no software to learn.</span></li>
-      <li><b>Workout &amp; standards templates</b><span>Ready-to-adapt WODs, scaled cleanly across RX and Scaled divisions.</span></li>
-      <li><b>Event-day run-of-show</b><span>A minute-by-minute timeline so you and your staff know exactly what happens, and when.</span></li>
-      <li><b>Judge briefing one-pager</b><span>Get every judge calling reps the same way in five minutes.</span></li>
-      <li><b>The how-to guide</b><span>Ties every piece together into a single plan you can run start to finish.</span></li>
+      <li><b>Scoring &amp; heat workbook</b><span>Build heats across every division, score the leaderboard live, and let judge rotation schedule itself. No software to learn, no formulas to write. Handles up to 300 athletes.</span></li>
+      <li><b>Judge rotation, done for you</b><span>Auto-assigns judges by heat, respects rest rules, and flags any judge scheduled against an athlete they're competing with. Override anything you want.</span></li>
+      <li><b>Workout &amp; standards cards</b><span>Ready-to-run WODs and movement standards, cleanly scaled across RX and Scaled. Print-and-post ready.</span></li>
+      <li><b>Judge briefing</b><span>Get every judge calling reps the same way in five minutes flat.</span></li>
+      <li><b>Event-day run-of-show</b><span>A minute-by-minute timeline so you and your staff always know what happens next.</span></li>
+      <li><b>Sponsor kit</b><span>Tiered sponsor packages and outreach templates to help the day pay for itself.</span></li>
+      <li><b>Social templates</b><span>Announcement, countdown, and results graphics so promo takes minutes, not evenings.</span></li>
+      <li><b>The how-to guide</b><span>Ties every piece into one plan you can run start to finish, even your first time.</span></li>
     </ul>
+    <p class="keepnote">Every file is yours to keep and reuse for every event you run — drop in your box name and go.</p>
   </div>
 </section>
 
@@ -107,20 +193,38 @@
   <div class="wrap">
     <div class="tag">Founding offer — first 10–15 boxes</div>
     <div class="price">€148<small>€297</small></div>
-    <p class="lead">We're finalizing this with a small group of boxes first. The first 10–15 gyms get full access at the founding price in exchange for honest feedback as we lock in v1. Price goes up to €297 once we launch publicly.</p>
-    <!-- Replace the href below with your Stripe Payment Link -->
-    <a class="btn" href="STRIPE_PAYMENT_LINK_HERE">Claim founding pricing — €148 →</a>
+    <p class="lead">The system is built. I'm bringing on the first 10–15 boxes at the founding price in exchange for honest feedback as they run their events. You get everything above at €148 — <strong>the price moves to €297 once those spots are gone.</strong></p>
+    <!-- Replace the href below with your Lemon Squeezy checkout link (founding discount code applied) -->
+    <a class="btn" href="LEMONSQUEEZY_CHECKOUT_LINK_HERE">Claim founding pricing — €148 →</a>
+    <p class="micro">One-time payment. Yours to keep and reuse for every event. Instant download. Secure checkout by Lemon Squeezy.</p>
   </div>
 </section>
 
 <section>
   <div class="wrap">
-    <p class="trust">"Built by a longtime CrossFit coach who's run more in-house competitions than they can count — and got tired of rebuilding the same spreadsheet every time."</p>
+    <p class="eyebrow">Questions</p>
+    <h2>Before you buy</h2>
+    <div class="faq">
+      <details><summary>Do I need special software?</summary><p>No. It runs in a normal spreadsheet — Excel or Google Sheets. If you can open a spreadsheet, you can run it.</p></details>
+      <details><summary>What if I've never run a competition before?</summary><p>That's who this is built for. The how-to guide walks you through the whole event start to finish, and every template is ready to use as-is.</p></details>
+      <details><summary>Which divisions does it support?</summary><p>RX and Scaled, Men and Women, out of the box — and it's flexible up to eight divisions if you want to add more.</p></details>
+      <details><summary>How big an event can it handle?</summary><p>Up to 300 athletes across as many as 60 heats per event, and up to five events in a day.</p></details>
+      <details><summary>Is it a subscription?</summary><p>No. One-time purchase. Buy it once, run every future comp on it.</p></details>
+      <details><summary>Can I customize it to my box?</summary><p>Yes — every file uses simple placeholders for your box and event name. Swap them in once and it's yours.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="closing">
+  <div class="wrap">
+    <h2>Your next comp is already half-run.</h2>
+    <p>Get the system, drop in your details, and run the day.</p>
+    <a class="btn" href="#offer">Get Comp in a Box →</a>
   </div>
 </section>
 
 <footer>
-  <div class="wrap">Comp in a Box · Secure checkout handled by Stripe</div>
+  <div class="wrap">Comp in a Box · Secure checkout &amp; instant delivery by Lemon Squeezy</div>
 </footer>
 
 </body>
